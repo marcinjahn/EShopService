@@ -25,10 +25,14 @@ public class Program
         builder.Services.AddScoped<IProductService, ProductService>();
 
         //nie wiem czy potrzebne
-        builder.Services.AddDbContext<DataContext>(options =>
-    options.UseInMemoryDatabase("InMemoryDb"));
+        builder.Services.AddDbContext<DataContext>();
 
         var app = builder.Build();
+
+        using (var context = new DataContext())
+        {
+            context.Database.EnsureCreated();
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
